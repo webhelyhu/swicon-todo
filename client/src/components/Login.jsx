@@ -53,7 +53,7 @@ export default function Login(props) {
         />
         <button type="submit">Sign In</button>
       </form>
-      <Link to="/signup">Don't have an account? Jump to Signup page!</Link>
+      <Link to="/adduser">Don't have a user yet? Go to Add User page!</Link>
     </div>
   )
 }

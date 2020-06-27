@@ -23,6 +23,7 @@ npm i
 
 - if user removed from database, token still valid, so "you are logged in", but user=null
 - authToken expired: not handled.
+- userlist the coded password.
 
 ## Credits
 

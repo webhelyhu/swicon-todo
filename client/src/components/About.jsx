@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useAuthToken } from "../context/auth"
 import { API } from "../helpers/api"
 
-export default function Admin() {
+export default function About() {
   const authToken = useAuthToken()
 
   const [data, setData] = useState([])
@@ -15,7 +15,7 @@ export default function Admin() {
 
   return (
     <React.Fragment>
-      <h1>Admin</h1>
+      <h1>About</h1>
       <p>You are successfully logged in.</p>
       <pre>{JSON.stringify(data, null, 2)}</pre>
     </React.Fragment>

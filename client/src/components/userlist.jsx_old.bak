@@ -61,6 +61,19 @@ export default function UsersTable() {
   return (
     <React.Fragment>
       <h1>List of users</h1>
+      <ol>
+        {users.map((user, i) => {
+          return (
+            <li key={user.id}>
+              Id: {user.id} Name:{user.username}
+              <button onClick={() => console.log("Will be...")}>
+                Show todos!
+              </button>
+            </li>
+          )
+        })}
+      </ol>
+
       <MaterialTable
         columns={[
           { title: "ID", field: "id" },
