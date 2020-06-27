@@ -5,6 +5,17 @@ const User = db.User;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
+// check if db is connected
+db.sequelize
+  .authenticate()
+  .then(function (err) {
+    console.log('Database connection has been established successfully.');
+  })
+  .catch(function (err) {
+    console.log('Unable to connect to the database:', err);
+  });
+
+
 exports.signup = (req, res) => {
   User.create({
     username: req.body.username,
@@ -77,4 +88,10 @@ exports.userContent = (req, res) => {
         error: err,
       });
     });
+};
+
+exports.healthcheck = (req, res) => {
+  res.status(200).json({
+    healthcheck: "I'm fine, thanks.",
+  });
 };

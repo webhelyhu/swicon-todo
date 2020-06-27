@@ -1,29 +1,32 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import PrivateRoute from "./PrivateRoute";
-import { AuthContext } from "../context/auth";
+import React, { useState } from "react"
+import { BrowserRouter as Router, Route, Link } from "react-router-dom"
+import PrivateRoute from "./PrivateRoute"
+import { AuthContext } from "../context/auth"
 
-import Admin from "./Admin";
-import Home from "./Home";
-import Login from "./Login";
-import Register from "./Register";
+import Admin from "./Admin"
+import Home from "./Home"
+import Login from "./Login"
+import Register from "./Register"
 
-import "../styles/App.css";
+import "../styles/App.css"
+import Healthcheck from "./Healthcheck"
+
+const TOKENNAME = "token-sw-todo"
 
 export default function App() {
-  const existingTokens = JSON.parse(localStorage.getItem("tokens"));
-  const [authTokens, setAuthTokens] = useState(existingTokens);
+  const existingTokens = JSON.parse(localStorage.getItem(TOKENNAME))
+  const [authTokens, setAuthTokens] = useState(existingTokens)
 
   const setTokens = (data) => {
-    localStorage.setItem("tokens", JSON.stringify(data));
-    setAuthTokens(data);
-  };
+    localStorage.setItem(TOKENNAME, JSON.stringify(data))
+    setAuthTokens(data)
+  }
 
   const logout = (e) => {
-    e.preventDefault();
-    setAuthTokens();
-    localStorage.removeItem("tokens");
-  };
+    e.preventDefault()
+    setAuthTokens()
+    localStorage.removeItem(TOKENNAME)
+  }
 
   return (
     <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
@@ -45,8 +48,14 @@ export default function App() {
                 <button onClick={logout}>Logout</button>
               </li>
             )}
+            <li>
+              <Link to="/healthcheck">Healthcheck</Link>
+            </li>
           </ul>
         </nav>
+        <Route path="/healthcheck">
+          <Healthcheck />
+        </Route>
         <Route path="/login">
           <Login />
         </Route>
@@ -61,5 +70,5 @@ export default function App() {
         </PrivateRoute>
       </Router>
     </AuthContext.Provider>
-  );
+  )
 }

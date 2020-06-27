@@ -5,6 +5,8 @@ const authJwt = require("./verifyJwtToken");
 module.exports = function (app) {
   const controller = require("../controller/controller.js");
 
+  app.get("/api/test/healthcheck", controller.healthcheck);
+
   app.post(
     "/api/auth/signup",
     [verifySignUp.checkDuplicateUserNameOrEmail],
