@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { useAuth } from "../context/auth";
-import { API } from "../helpers/api";
+import React, { useEffect, useState } from "react"
+import { useAuthToken } from "../context/auth"
+import { API } from "../helpers/api"
 
 export default function Admin() {
-  const { authTokens } = useAuth();
+  const authToken = useAuthToken()
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([])
 
   useEffect(() => {
-    API({ endpoint: "/api/test/user" }, authTokens).then((response) =>
-      setData(response)
-    );
-  }, [setData, authTokens]);
+    API({ endpoint: "/api/test/user" }, authToken)
+      .then((response) => setData(response))
+      .catch((error) => console.log("test user error", error))
+  }, [setData, authToken])
 
   return (
     <React.Fragment>
@@ -19,5 +19,5 @@ export default function Admin() {
       <p>You are successfully logged in.</p>
       <pre>{JSON.stringify(data, null, 2)}</pre>
     </React.Fragment>
-  );
+  )
 }

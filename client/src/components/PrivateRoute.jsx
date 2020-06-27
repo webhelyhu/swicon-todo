@@ -1,13 +1,13 @@
-import React from "react";
-import { Route, Redirect } from "react-router-dom";
-import { useAuth } from "../context/auth";
+import React from "react"
+import { Route, Redirect } from "react-router-dom"
+import { useAuthToken } from "../context/auth"
 
 export default function PrivateRoute({ children, ...rest }) {
-  const { authTokens } = useAuth();
+  const authToken = useAuthToken()
 
   return (
     <Route {...rest}>
-      {authTokens ? (
+      {authToken ? (
         children
       ) : (
         <Redirect
@@ -15,5 +15,5 @@ export default function PrivateRoute({ children, ...rest }) {
         />
       )}
     </Route>
-  );
+  )
 }

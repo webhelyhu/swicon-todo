@@ -1,7 +1,7 @@
-import React, { useState } from "react"
-import { BrowserRouter as Router, Route, Link } from "react-router-dom"
+import React from "react"
+import { BrowserRouter as Router, Route } from "react-router-dom"
 import PrivateRoute from "./PrivateRoute"
-import { AuthContext } from "../context/auth"
+import { AuthProvider } from "../context/auth"
 
 import Admin from "./Admin"
 import Home from "./Home"
@@ -10,49 +10,13 @@ import Register from "./Register"
 
 import "../styles/App.css"
 import Healthcheck from "./Healthcheck"
-
-const TOKENNAME = "token-sw-todo"
+import Header from "./Header"
 
 export default function App() {
-  const existingTokens = JSON.parse(localStorage.getItem(TOKENNAME))
-  const [authTokens, setAuthTokens] = useState(existingTokens)
-
-  const setTokens = (data) => {
-    localStorage.setItem(TOKENNAME, JSON.stringify(data))
-    setAuthTokens(data)
-  }
-
-  const logout = (e) => {
-    e.preventDefault()
-    setAuthTokens()
-    localStorage.removeItem(TOKENNAME)
-  }
-
   return (
-    <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
+    <AuthProvider>
       <Router>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home Page</Link>
-            </li>
-            <li>
-              <Link to="/admin">Admin Page</Link>
-            </li>
-            {!authTokens ? (
-              <li>
-                <Link to="/login">Login</Link>
-              </li>
-            ) : (
-              <li>
-                <button onClick={logout}>Logout</button>
-              </li>
-            )}
-            <li>
-              <Link to="/healthcheck">Healthcheck</Link>
-            </li>
-          </ul>
-        </nav>
+        <Header />
         <Route path="/healthcheck">
           <Healthcheck />
         </Route>
@@ -69,6 +33,6 @@ export default function App() {
           <Admin />
         </PrivateRoute>
       </Router>
-    </AuthContext.Provider>
+    </AuthProvider>
   )
 }

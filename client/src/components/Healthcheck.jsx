@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react"
-import { useAuth } from "../context/auth"
+import { useAuthToken } from "../context/auth"
 import { API } from "../helpers/api"
 
 export default function Healthcheck() {
-  const { authTokens } = useAuth()
+  const authToken = useAuthToken()
 
   const [data, setData] = useState([])
 
   useEffect(() => {
-    API({ endpoint: "/api/test/healthcheck" }, authTokens).then((response) =>
+    API({ endpoint: "/api/test/healthcheck" }, authToken).then((response) =>
       setData(response)
     )
-  }, [setData, authTokens])
+  }, [setData, authToken])
 
   return (
     <React.Fragment>

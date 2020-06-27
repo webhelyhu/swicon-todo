@@ -22,6 +22,7 @@ npm i
 # TODO
 
 - if user removed from database, token still valid, so "you are logged in", but user=null
+- authToken expired: not handled.
 
 ## Credits
 
