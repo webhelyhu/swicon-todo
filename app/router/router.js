@@ -23,6 +23,8 @@ module.exports = function (app) {
 
   app.get("/api/test/user", [authJwt.verifyToken], controller.userContent);
 
+  app.get("/api/user", controller.getAllUsers)
+
   app.get("*", (req, res) => {
     let url = path.join(__dirname, "../../client/build", "index.html");
     if (!url.startsWith("/app/")) url = url.substring(1);

@@ -30,7 +30,8 @@ export default function TodosTable() {
         {todos.map((todo, i) => {
           return (
             <li key={todo.id}>
-              Id: {todo.id} {todo.todotitle} {todo.todobody}{" "}
+              Id: {todo.id} {todo.todotitle} {todo.todobody} owner:{" "}
+              {todo?.owner}
               <button onClick={() => removeTodo(todo.id)}>DELETE</button>
             </li>
           )

@@ -55,6 +55,7 @@ CREATE TABLE public."Todos"
     id integer NOT NULL DEFAULT nextval('"Todos_id_seq"'::regclass),
     todotitle character varying(255) COLLATE pg_catalog."default",
     todobody character varying(255) COLLATE pg_catalog."default",
+    owner integer NOT NULL,
     "createdAt" timestamp with time zone NOT NULL,
     "updatedAt" timestamp with time zone NOT NULL,
     CONSTRAINT "Todos_pkey" PRIMARY KEY (id)

@@ -91,6 +91,21 @@ exports.userContent = (req, res) => {
     });
 };
 
+exports.getAllUsers = (req, res) => {
+  User.findAll({ attributes: { exclude: ['password'] } }).then(users => {
+    res.status(200).json({
+      users,
+    });
+  })
+    .catch((err) => {
+      res.status(500).json({
+        description: "Can not get users",
+        error: err,
+      });
+    });
+};
+
+
 exports.healthcheck = (req, res) => {
   res.status(200).json({
     healthcheck: "I'm fine, thanks.",
@@ -120,7 +135,7 @@ exports.getTodo = (req, res) => {
   console.log("getTodo id:", req.params.todoId)
   Todo.findOne({
     where: { id: req.params.todoId },
-    attributes: ["todotitle", "todobody", "id"],
+    attributes: ["todotitle", "todobody", "id", "owner"],
   })
     .then((todo) => {
       res.status(200).json({
@@ -154,7 +169,7 @@ exports.updateTodo = (req, res) => {
     })
     .catch((err) => {
       res.status(500).json({
-        description: "Error updating todo Todo",
+        description: "Error updating todo",
         error: err,
       });
     });
@@ -164,6 +179,7 @@ exports.updateTodo = (req, res) => {
 exports.createTodo = (req, res) => {
   console.log("creating todo. req.body is", req.body)
   Todo.create({
+    owner: req.body.owner || req.userId,  // if we got no owner -> logged in user is the owner
     todotitle: req.body.todotitle,
     todobody: req.body.todobody,
   })
