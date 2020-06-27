@@ -1,23 +1,63 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { useAuthToken } from "../context/auth"
 import { API } from "../helpers/api"
+import TodosTable from "./TodosTable"
 
 export default function Todos() {
   const authToken = useAuthToken()
+  const [todotitle, setTodotitle] = useState("")
+  const [todobody, setTodobody] = useState("")
 
-  const [data, setData] = useState([])
-
-  useEffect(() => {
-    API({ endpoint: "/api/todo" }, authToken).then((response) =>
-      setData(response)
+  const submitAddTodo = (e) => {
+    e.preventDefault()
+    API(
+      {
+        endpoint: "/api/todo",
+        method: "POST",
+        data: { todobody, todotitle },
+      },
+      authToken
     )
-  }, [setData, authToken])
-
+      .then((response) => {
+        if (response?.status === 200) {
+          console.log("Success creating todo")
+        } else {
+          console.log("Todo create error: status is not 200", response.reason)
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
   return (
     <React.Fragment>
       <h1>Todos</h1>
       <p>See all todos:</p>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      <TodosTable />
+      <form className="addtodo" onSubmit={submitAddTodo}>
+        <div>New Todo</div>
+        <div>
+          <label htmlFor="input__todotitle">Title</label>
+          <input
+            id="input__todotitle"
+            type="text"
+            placeholder="todo title"
+            value={todotitle}
+            onChange={(e) => setTodotitle(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="input__todobody">Body</label>
+          <input
+            id="input__todobody"
+            type="text"
+            placeholder="todo body"
+            value={todobody}
+            onChange={(e) => setTodobody(e.target.value)}
+          />
+        </div>
+        <button>Add Todo</button>
+      </form>
     </React.Fragment>
   )
 }

@@ -162,6 +162,7 @@ exports.updateTodo = (req, res) => {
 
 
 exports.createTodo = (req, res) => {
+  console.log("creating todo. req.body is", req.body)
   Todo.create({
     todotitle: req.body.todotitle,
     todobody: req.body.todobody,
