@@ -1,6 +1,7 @@
 require("dotenv").config();
 const db = require("../../models/index");
 const User = db.User;
+const Todo = db.Todo;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -94,4 +95,18 @@ exports.healthcheck = (req, res) => {
   res.status(200).json({
     healthcheck: "I'm fine, thanks.",
   });
+};
+
+exports.getAllTodos = (req, res) => {
+  Todo.findAll().then(todos => {
+    res.status(200).json({
+      todos,
+    });
+  })
+    .catch((err) => {
+      res.status(500).json({
+        description: "Can not get todos",
+        error: err,
+      });
+    });
 };
