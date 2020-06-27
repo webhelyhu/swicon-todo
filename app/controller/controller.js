@@ -97,6 +97,11 @@ exports.healthcheck = (req, res) => {
   });
 };
 
+//
+//  Route controllers for Todos
+//
+
+
 exports.getAllTodos = (req, res) => {
   Todo.findAll().then(todos => {
     res.status(200).json({
@@ -106,6 +111,85 @@ exports.getAllTodos = (req, res) => {
     .catch((err) => {
       res.status(500).json({
         description: "Can not get todos",
+        error: err,
+      });
+    });
+};
+
+exports.getTodo = (req, res) => {
+  console.log("getTodo id:", req.params.todoId)
+  Todo.findOne({
+    where: { id: req.params.todoId },
+    attributes: ["todotitle", "todobody", "id"],
+  })
+    .then((todo) => {
+      res.status(200).json({
+        todo,
+        description: "Found requested todo",
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        description: "Can not find Todo",
+        error: err,
+      });
+    });
+};
+
+exports.updateTodo = (req, res) => {
+  console.log("updateTodo id:", req.params.todoId)
+
+  Todo.update(
+    {
+      todobody: req.body.todobody,
+      todotitle: req.body.todotitle
+    },
+    { where: { id: req.params.todoId } },
+  )
+    .then((todo) => {
+      res.status(200).json({
+        todo,
+        description: "Todo updated",
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        description: "Error updating todo Todo",
+        error: err,
+      });
+    });
+};
+
+
+exports.createTodo = (req, res) => {
+  Todo.create({
+    todotitle: req.body.todotitle,
+    todobody: req.body.todobody,
+  })
+    .then((todo) => {
+      res
+        .status(200)
+        .json({ status: 200, message: "Todo created successfully!", todo });
+    })
+    .catch((err) => {
+      res.status(400).json({ status: 400, message: "Todo create Error -> " + err });
+    });
+};
+
+
+exports.deleteTodo = (req, res) => {
+  console.log("deleteTodo id:", req.params.todoId)
+  Todo.destroy({
+    where: { id: req.params.todoId }
+  })
+    .then(() => {
+      res.status(200).json({
+        description: "Deleted.",
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        description: "Error while deleting todo",
         error: err,
       });
     });

@@ -11,6 +11,7 @@ import Register from "./Register"
 import "../styles/App.css"
 import Healthcheck from "./Healthcheck"
 import Header from "./Header"
+import Todos from "./Todos"
 
 export default function App() {
   return (
@@ -31,6 +32,9 @@ export default function App() {
         </Route>
         <PrivateRoute path="/admin">
           <Admin />
+        </PrivateRoute>
+        <PrivateRoute path="/todos">
+          <Todos />
         </PrivateRoute>
       </Router>
     </AuthProvider>

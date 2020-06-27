@@ -19,9 +19,14 @@ const Header = () => {
             <Link to="/login">Login</Link>
           </li>
         ) : (
-          <li>
-            <button onClick={() => setAuthToken("")}>Logout</button>
-          </li>
+          <React.Fragment>
+            <li>
+              <button onClick={() => setAuthToken("")}>Logout</button>
+            </li>
+            <li>
+              <Link to="/todos">Todos</Link>
+            </li>
+          </React.Fragment>
         )}
         <li>
           <Link to="/healthcheck">Healthcheck</Link>
