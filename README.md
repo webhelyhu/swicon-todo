@@ -1,5 +1,7 @@
 # Three layer Todo app
 
+## Not yet in working stage!!!!
+
 ## Dev config
 
 - Development is configured for dev server 192.168.168.11, so you may need to configure the proxy value in client/package.json
