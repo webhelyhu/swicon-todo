@@ -13,7 +13,7 @@ import Button from "@material-ui/core/Button"
 // import Menu from "@material-ui/core/Menu"
 // import MenuItem from "@material-ui/core/MenuItem"
 
-import logo from "../assets/logo.svg"
+import logo from "../assets/logo2.svg"
 
 function ElevationScroll(props) {
   const { children, window } = props

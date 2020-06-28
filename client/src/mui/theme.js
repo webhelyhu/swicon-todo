@@ -2,6 +2,7 @@ import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
 
 const blue = '#0B72B9'
 const orange = '#FFBA60'
+const brick = '#B73232'
 
 
 export default createMuiTheme({
@@ -9,6 +10,7 @@ export default createMuiTheme({
     common: {
       blue,
       orange,
+      brick
     },
     primary: {
       main: blue

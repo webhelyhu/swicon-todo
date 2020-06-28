@@ -23,6 +23,8 @@ npm i
 
 # TODO
 
+Lots!!!
+
 - if user removed from database, token still valid, so "you are logged in", but user=null
 - authToken expired: not handled.
 - userlist the coded password.
@@ -30,3 +32,4 @@ npm i
 ## Credits
 
 - Based on a PERN boilerplate (Reno Expo) for authentication.
+- Using design elements from Zachary Reece
