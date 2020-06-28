@@ -116,7 +116,6 @@ exports.healthcheck = (req, res) => {
 //  Route controllers for Todos
 //
 
-
 exports.getAllTodos = (req, res) => {
   Todo.findAll().then(todos => {
     res.status(200).json({
@@ -211,3 +210,24 @@ exports.deleteTodo = (req, res) => {
       });
     });
 };
+
+
+
+exports.getTodosOfUser = (req, res) => {
+  Todo.findAll({
+    where: {
+      owner: req.params.userId
+    }
+  }).then(todos => {
+    res.status(200).json({
+      todos,
+    });
+  })
+    .catch((err) => {
+      res.status(500).json({
+        description: "Can not get todos",
+        error: err,
+      });
+    });
+};
+

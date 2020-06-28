@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { useAuthToken } from "../context/auth"
 import { API } from "../helpers/api"
 import TodosTable from "./TodosTable"
+import TodoTable from "./TodoTable"
 
 export default function Todos() {
   const authToken = useAuthToken()
@@ -32,6 +33,7 @@ export default function Todos() {
   return (
     <React.Fragment>
       <h1>Todos</h1>
+      <TodoTable />
       <p>See all todos:</p>
       <TodosTable />
       <form className="addtodo" onSubmit={submitAddTodo}>

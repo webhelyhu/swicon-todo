@@ -13,6 +13,8 @@ module.exports = function (app) {
   app.put("/api/todo/:todoId", [authJwt.verifyToken], controller.updateTodo)
   app.delete("/api/todo/:todoId", [authJwt.verifyToken], controller.deleteTodo)
 
+  app.get("/api/todosofuser/:userId", [authJwt.verifyToken], controller.getTodosOfUser);
+
   app.post(
     "/api/auth/signup",
     [verifySignUp.checkDuplicateUserNameOrEmail],

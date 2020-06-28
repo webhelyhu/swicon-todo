@@ -1,9 +1,4 @@
-import React, { useEffect, useState } from "react"
-import MaterialTable from "material-table"
-
-import { API } from "../helpers/api"
-
-import { forwardRef } from "react"
+import React, { forwardRef } from "react"
 
 import AddBox from "@material-ui/icons/AddBox"
 import ArrowUpward from "@material-ui/icons/ArrowUpward"
@@ -22,7 +17,7 @@ import Search from "@material-ui/icons/Search"
 import ViewColumn from "@material-ui/icons/ViewColumn"
 import ListAlt from "@material-ui/icons/ListAlt"
 
-const tableIcons = {
+export const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
   Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
@@ -45,53 +40,4 @@ const tableIcons = {
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
   ListAlt: forwardRef((props, ref) => <ListAlt {...props} ref={ref} />),
-}
-
-export default function UsersTable() {
-  const [users, setUsers] = useState([])
-
-  useEffect(() => {
-    API({ endpoint: "/api/user" }).then((response) => {
-      setUsers(response?.users || [])
-    })
-  }, [setUsers])
-
-  if (!Array.isArray(users)) return <p>Waiting for users...</p>
-
-  return (
-    <React.Fragment>
-      <h1>List of users</h1>
-      <ol>
-        {users.map((user, i) => {
-          return (
-            <li key={user.id}>
-              Id: {user.id} Name:{user.username}
-              <button onClick={() => console.log("Will be...")}>
-                Show todos!
-              </button>
-            </li>
-          )
-        })}
-      </ol>
-
-      <MaterialTable
-        columns={[
-          { title: "ID", field: "id" },
-          { title: "Username", field: "username" },
-        ]}
-        data={users}
-        title="Users"
-        icons={tableIcons}
-        actions={[
-          {
-            icon: () => <ListAlt />,
-            tooltip: "Show Todos",
-            onClick: (event, rowData) => {
-              console.log("Show todo for user id ", rowData.id)
-            },
-          },
-        ]}
-      />
-    </React.Fragment>
-  )
 }
