@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import Modal from "@material-ui/core/Modal"
 import Backdrop from "@material-ui/core/Backdrop"
 import Fade from "@material-ui/core/Fade"
-import TodoTable from "./TodoTable"
+import EditorForm from "./EditorForm"
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -19,11 +19,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function TodoModal({ todosOfUser, setTodosOfUser }) {
+const EditorModal = ({ edited, setEdited }) => {
   const classes = useStyles()
 
   const handleClose = () => {
-    setTodosOfUser(false)
+    setEdited(false)
   }
 
   return (
@@ -32,7 +32,7 @@ export default function TodoModal({ todosOfUser, setTodosOfUser }) {
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         className={classes.modal}
-        open={!!todosOfUser}
+        open={!!edited}
         onClose={handleClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
@@ -40,18 +40,20 @@ export default function TodoModal({ todosOfUser, setTodosOfUser }) {
           timeout: 500,
         }}
       >
-        <Fade in={!!todosOfUser}>
+        <Fade in={!!edited}>
           <div className={classes.paper}>
-            <h2 id="transition-modal-title">Todos of User id {todosOfUser}</h2>
+            <h2 id="transition-modal-title">TODO EDITOR</h2>
             <p id="transition-modal-description">
               To close, click:
               <button onClick={handleClose}>Close</button>
             </p>
 
-            <TodoTable todosOfUser={todosOfUser} />
+            <EditorForm edited={edited} setEdited={setEdited} />
           </div>
         </Fade>
       </Modal>
     </React.Fragment>
   )
 }
+
+export default EditorModal

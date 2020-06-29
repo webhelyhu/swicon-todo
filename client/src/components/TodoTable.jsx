@@ -4,10 +4,12 @@ import MaterialTable from "material-table"
 
 import { tableIcons } from "./TableIcons"
 import { useAuthToken } from "../context/auth"
+import EditorModal from "./EditorModal"
 
-export default function TodoTable({ todosOfUser, setTodosOfUser }) {
+const TodoTable = ({ todosOfUser, setTodosOfUser }) => {
   const authToken = useAuthToken()
   const [todos, setTodos] = useState([])
+  const [edited, setEdited] = useState()
 
   useEffect(() => {
     API(
@@ -25,6 +27,7 @@ export default function TodoTable({ todosOfUser, setTodosOfUser }) {
 
   const editTodo = (todoId) => {
     console.log("Edit todo", todoId)
+    setEdited(todoId)
   }
   const removeTodo = (todoId) => {
     console.log("REMOVE todo", todoId)
@@ -38,43 +41,48 @@ export default function TodoTable({ todosOfUser, setTodosOfUser }) {
   // console.log("for one user?, TodoTable array:", !!todosOfUser, todos)
 
   return (
-    <MaterialTable
-      columns={[
-        { title: "ID", field: "id" },
-        { title: "Todo Title", field: "todotitle" },
-        { title: "Todo Body", field: "todobody" },
-      ]}
-      data={todos}
-      title={!!todosOfUser ? "Todos for selected user" : "All todos"}
-      icons={tableIcons}
-      actions={[
-        {
-          icon: tableIcons.Edit,
-          tooltip: "Edit Todo",
-          onClick: (event, rowData) => {
-            editTodo(rowData.id)
+    <React.Fragment>
+      <MaterialTable
+        columns={[
+          { title: "ID", field: "id" },
+          { title: "Todo Title", field: "todotitle" },
+          { title: "Todo Body", field: "todobody" },
+        ]}
+        data={todos}
+        title={!!todosOfUser ? "Todos for selected user" : "All todos"}
+        icons={tableIcons}
+        actions={[
+          {
+            icon: tableIcons.Edit,
+            tooltip: "Edit Todo",
+            onClick: (event, rowData) => {
+              editTodo(rowData.id)
+            },
           },
-        },
-        {
-          icon: tableIcons.Delete,
-          tooltip: "Remove Todo",
-          onClick: (event, rowData) => {
-            removeTodo(rowData.id)
+          {
+            icon: tableIcons.Delete,
+            tooltip: "Remove Todo",
+            onClick: (event, rowData) => {
+              removeTodo(rowData.id)
+            },
           },
-        },
-        {
-          icon: tableIcons.Add,
-          disabled: !todosOfUser,
-          tooltip: "Add New Todo",
-          isFreeAction: true,
-          onClick: (event, rowData) => {
-            addNewTodo(rowData.id)
+          {
+            icon: tableIcons.Add,
+            disabled: !todosOfUser,
+            tooltip: "Add New Todo",
+            isFreeAction: true,
+            onClick: (event, rowData) => {
+              addNewTodo(rowData.id)
+            },
           },
-        },
-      ]}
-      options={{
-        actionsColumnIndex: -1,
-      }}
-    />
+        ]}
+        options={{
+          actionsColumnIndex: -1,
+        }}
+      />
+      <EditorModal edited={edited} setEdited={setEdited} />
+    </React.Fragment>
   )
 }
+
+export default TodoTable
