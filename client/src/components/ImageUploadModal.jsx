@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import Modal from "@material-ui/core/Modal"
 import Backdrop from "@material-ui/core/Backdrop"
@@ -19,9 +19,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function ImageUploadModal({ avatarId, setAvatarId }) {
+export default function ImageUploadModal({
+  avatarId,
+  setAvatarId,
+  setUsersTableKey,
+}) {
   const classes = useStyles()
-  const [modalKey, setModalKey] = useState(Math.random())
+  // const [modalKey, setModalKey] = useState(Math.random())
 
   const handleClose = () => {
     setAvatarId(false)
@@ -52,10 +56,10 @@ export default function ImageUploadModal({ avatarId, setAvatarId }) {
             </p>
 
             <ImageUpload
-              key={modalKey}
+              // key={modalKey}
               avatarId={avatarId}
               setAvatarId={setAvatarId}
-              setModalKey={setModalKey}
+              setUsersTableKey={setUsersTableKey}
             />
           </div>
         </Fade>

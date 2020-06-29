@@ -1,10 +1,23 @@
 import React, { useState, useEffect } from "react"
 import { API } from "../helpers/api"
-import MaterialTable from "material-table"
+import MaterialTable, { MTableToolbar } from "material-table"
 
 import { tableIcons } from "./TableIcons"
 import { useAuthToken } from "../context/auth"
 import EditorModal from "./EditorModal"
+
+const columnsForUser = [
+  { title: "ID", field: "id" },
+  { title: "Todo Title", field: "todotitle" },
+  { title: "Todo Body", field: "todobody" },
+]
+
+const columnsForAll = [
+  { title: "ID", field: "id" },
+  { title: "Owner ID", field: "owner" },
+  { title: "Todo Title", field: "todotitle" },
+  { title: "Todo Body", field: "todobody" },
+]
 
 const TodoTable = ({ todosOfUser, setModalKey }) => {
   const authToken = useAuthToken()
@@ -62,13 +75,16 @@ const TodoTable = ({ todosOfUser, setModalKey }) => {
   return (
     <React.Fragment>
       <MaterialTable
-        columns={[
-          { title: "ID", field: "id" },
-          { title: "Todo Title", field: "todotitle" },
-          { title: "Todo Body", field: "todobody" },
-        ]}
+        components={{
+          Toolbar: (props) => (
+            <div style={{ backgroundColor: "#e8eaf5" }}>
+              <MTableToolbar {...props} />
+            </div>
+          ),
+        }}
+        columns={!!todosOfUser ? columnsForUser : columnsForAll}
         data={todos}
-        title={!!todosOfUser ? "Todos for selected user" : "All todos"}
+        title={!!todosOfUser ? "Todos for User" : "All todos"}
         icons={tableIcons}
         actions={[
           {

@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
 const menuMap = new Map([
   ["/adduser", 0],
   ["/todos", 1],
-  ["/about", 2],
+  ["/profile", 2],
   ["/healthcheck", 2],
   ["/login", 3],
 ])
@@ -89,7 +89,7 @@ const Header = (props) => {
 
   // effect to re-set the active menu in Header, if needed.
   useEffect(() => {
-    console.log("Location has changed. pathname:", pathname)
+    // console.log("Location has changed. pathname:", pathname)
     if (menuMap.has(pathname)) {
       if (menuMap.get(pathname) !== activeMenu) {
         setActiveMenu(menuMap.get(pathname))
@@ -134,9 +134,9 @@ const Header = (props) => {
               {authToken ? (
                 <Tab
                   className={classes.tab}
-                  label="About"
+                  label="Profile"
                   component={Link}
-                  to="/about"
+                  to="/profile"
                 />
               ) : (
                 <Tab

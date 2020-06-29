@@ -3,7 +3,9 @@ import { makeStyles } from "@material-ui/core/styles"
 import Modal from "@material-ui/core/Modal"
 import Backdrop from "@material-ui/core/Backdrop"
 import Fade from "@material-ui/core/Fade"
+import Close from "@material-ui/icons/Close"
 import TodoTable from "./TodoTable"
+import { IconButton, Paper, Grid, Typography } from "@material-ui/core"
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -16,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     border: "0px solid blue",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
+    minWidth: "50vw",
   },
 }))
 
@@ -42,19 +45,26 @@ export default function TodoModal({ todosOfUser, setTodosOfUser }) {
         }}
       >
         <Fade in={!!todosOfUser}>
-          <div className={classes.paper}>
-            <h2 id="transition-modal-title">Todos of User id {todosOfUser}</h2>
-            <p id="transition-modal-description">
-              To close, click:
-              <button onClick={handleClose}>Close</button>
-            </p>
+          <Paper className={classes.paper}>
+            <Grid container justify="space-between">
+              <Grid item>
+                <Typography variant="h4" color="inherit">
+                  Todos of User id {todosOfUser}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <IconButton onClick={handleClose}>
+                  <Close />
+                </IconButton>
+              </Grid>
+            </Grid>
 
             <TodoTable
               key={modalKey}
               todosOfUser={todosOfUser}
               setModalKey={setModalKey}
             />
-          </div>
+          </Paper>
         </Fade>
       </Modal>
     </React.Fragment>

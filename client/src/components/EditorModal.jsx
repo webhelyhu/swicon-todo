@@ -4,6 +4,8 @@ import Modal from "@material-ui/core/Modal"
 import Backdrop from "@material-ui/core/Backdrop"
 import Fade from "@material-ui/core/Fade"
 import EditorForm from "./EditorForm"
+import { IconButton, Paper, Grid, Typography } from "@material-ui/core"
+import Close from "@material-ui/icons/Close"
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -41,12 +43,19 @@ const EditorModal = ({ edited, setEdited, newTodoForUserId, setModalKey }) => {
         }}
       >
         <Fade in={!!edited}>
-          <div className={classes.paper}>
-            <h2 id="transition-modal-title">TODO EDITOR</h2>
-            <p id="transition-modal-description">
-              To close, click:
-              <button onClick={handleClose}>Close</button>
-            </p>
+          <Paper className={classes.paper}>
+            <Grid container justify="space-between">
+              <Grid item>
+                <Typography variant="h4" color="inherit">
+                  Todo editor
+                </Typography>
+              </Grid>
+              <Grid item>
+                <IconButton onClick={handleClose}>
+                  <Close />
+                </IconButton>
+              </Grid>
+            </Grid>
 
             <EditorForm
               edited={edited}
@@ -54,7 +63,7 @@ const EditorModal = ({ edited, setEdited, newTodoForUserId, setModalKey }) => {
               newTodoForUserId={newTodoForUserId}
               setModalKey={setModalKey}
             />
-          </div>
+          </Paper>
         </Fade>
       </Modal>
     </React.Fragment>

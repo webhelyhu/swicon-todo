@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react"
-import MaterialTable from "material-table"
+import MaterialTable, { MTableToolbar } from "material-table"
 import { tableIcons } from "./TableIcons"
 import { API } from "../helpers/api"
 import { useAuthToken } from "../context/auth"
-import { Typography } from "@material-ui/core"
-import Person from "@material-ui/icons/Person"
+import { Typography, Avatar } from "@material-ui/core"
 
 export default function UsersTable({ setTodosOfUser, setAvatarId }) {
   const [users, setUsers] = useState([])
@@ -18,17 +17,32 @@ export default function UsersTable({ setTodosOfUser, setAvatarId }) {
 
   if (!Array.isArray(users)) return <p>Waiting for users...</p>
 
-  console.log("rendering users table. array is", users)
+  // console.log("rendering users table. array is", users)
 
-  const renderAvatar = (imgSrc) => {
-    if (!imgSrc) return <Person />
+  const renderUserField = (rowData) => {
     return (
-      <img
-        src={imgSrc}
-        alt="Avatar"
-        style={{ width: 50, maxHeight: 100, borderRadius: 25 }}
-      />
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            width: "85px",
+            textAlign: "center",
+          }}
+        >
+          {renderAvatar(rowData.avatar, rowData.username)}
+        </div>
+        {rowData.username}
+      </div>
     )
+  }
+
+  const renderAvatar = (imgSrc, username) => {
+    if (!imgSrc) return <Avatar variant="square">{username[0]}</Avatar>
+    return <Avatar alt="Avatar" src={imgSrc} variant="square" />
   }
 
   const handleUploadAvatar = (id) => {
@@ -39,23 +53,22 @@ export default function UsersTable({ setTodosOfUser, setAvatarId }) {
     <React.Fragment>
       <Typography variant="h4">List of users</Typography>
       <MaterialTable
+        components={{
+          Toolbar: (props) => (
+            <div style={{ backgroundColor: "#e8eaf5" }}>
+              <MTableToolbar {...props} />
+            </div>
+          ),
+        }}
         columns={[
-          {
-            title: "Avatar",
-            field: "avatar",
-            cellStyle: {
-              textAlign: "center",
-              width: "80px",
-              maxWidth: "80px",
-            },
-            headerStyle: {
-              width: "80px",
-              maxWidth: "80px",
-            },
-            render: (rowData) => renderAvatar(rowData.avatar),
-          },
           { title: "ID", field: "id" },
-          { title: "Username", field: "username" },
+          {
+            title: "User",
+            headerStyle: { paddingLeft: "100px" },
+            defaultSort: "asc",
+            field: "username",
+            render: (rowData) => renderUserField(rowData),
+          },
         ]}
         data={users}
         title="Users"

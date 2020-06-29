@@ -7,7 +7,7 @@ const ImageUpload = ({
   errorText,
   avatarId: userId,
   setAvatarId,
-  setModalKey,
+  setUsersTableKey,
 }) => {
   const [file, setFile] = useState()
   const [preview, setPreview] = useState()
@@ -47,7 +47,11 @@ const ImageUpload = ({
       formData.append("image", file)
       formData.append("userId", userId)
       uploadImage(userId, formData, authToken)
-        .then((response) => console.log(response))
+        .then((response) => {
+          console.log("Image uploaded:", response)
+          setAvatarId(false)
+          setUsersTableKey(Math.random())
+        })
         .catch((error) => console.log("test user error", error))
     } catch (error) {
       console.log(error)

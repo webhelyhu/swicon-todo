@@ -7,12 +7,12 @@ import ThemeProvider from "@material-ui/styles/ThemeProvider"
 import theme from "../mui/theme"
 import Header from "./Header"
 
-import About from "./About"
 import Home from "./Home"
 import Login from "./Login"
 import Register from "./Register"
 import Healthcheck from "./Healthcheck"
 import Todos from "./Todos"
+import Profile from "./Profile"
 
 export default function App() {
   return (
@@ -32,8 +32,8 @@ export default function App() {
           <Route exact path="/">
             <Home />
           </Route>
-          <PrivateRoute path="/about">
-            <About />
+          <PrivateRoute path="/profile">
+            <Profile />
           </PrivateRoute>
           <PrivateRoute path="/todos">
             <Todos />
