@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react"
 import MaterialTable from "material-table"
 import { tableIcons } from "./TableIcons"
 import { API } from "../helpers/api"
+import { useAuthToken } from "../context/auth"
+import { Typography } from "@material-ui/core"
 
 export default function UsersTable({ setTodosOfUser }) {
   const [users, setUsers] = useState([])
+  const authToken = useAuthToken()
 
   useEffect(() => {
     API({ endpoint: "/api/user" }).then((response) => {
@@ -16,7 +19,7 @@ export default function UsersTable({ setTodosOfUser }) {
 
   return (
     <React.Fragment>
-      <h1>List of users</h1>
+      <Typography variant="h4">List of users</Typography>
       <MaterialTable
         columns={[
           { title: "ID", field: "id" },
@@ -29,6 +32,7 @@ export default function UsersTable({ setTodosOfUser }) {
           {
             icon: tableIcons.ListAlt,
             tooltip: "Show Todos",
+            disabled: !authToken,
             onClick: (event, rowData) => {
               setTodosOfUser(rowData.id)
             },
