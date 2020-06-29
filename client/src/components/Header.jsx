@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
-import { useAuthToken, useSetAuthToken } from "../context/auth"
-
+import { Link, useLocation } from "react-router-dom"
 import AppBar from "@material-ui/core/AppBar"
 import { Toolbar } from "@material-ui/core"
 import useScrollTrigger from "@material-ui/core/useScrollTrigger"
@@ -13,22 +11,8 @@ import Button from "@material-ui/core/Button"
 // import Menu from "@material-ui/core/Menu"
 // import MenuItem from "@material-ui/core/MenuItem"
 
+import { useAuthToken, useSetAuthToken } from "../context/auth"
 import logo from "../assets/logo2.svg"
-
-function ElevationScroll(props) {
-  const { children, window } = props
-  // Note that you normally won't need to set the window ref as useScrollTrigger
-  // will default to window.
-  // This is only being set here because the demo is in an iframe.
-  const trigger = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: 0,
-    target: window ? window() : undefined,
-  })
-  return React.cloneElement(children, {
-    elevation: trigger ? 10 : 0,
-  })
-}
 
 const useStyles = makeStyles((theme) => ({
   toolbarMargin: {
@@ -65,35 +49,50 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+const menuMap = new Map([
+  ["/adduser", 0],
+  ["/todos", 1],
+  ["/about", 2],
+  ["/healthcheck", 2],
+  ["/login", 3],
+])
+
+const ElevationScroll = (props) => {
+  const { children, window } = props
+  // Note that you normally won't need to set the window ref as useScrollTrigger
+  // will default to window.
+  // This is only being set here because the demo is in an iframe.
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 0,
+    target: window ? window() : undefined,
+  })
+  return React.cloneElement(children, {
+    elevation: trigger ? 10 : 0,
+  })
+}
+
 const Header = (props) => {
   const authToken = useAuthToken()
   const setAuthToken = useSetAuthToken()
-
   const classes = useStyles()
-  const [value, setValue] = useState(0) // tabs stop value -- which is active?
+  let { pathname } = useLocation()
 
-  const handleChange = (event, value) => setValue(value)
+  const [activeMenu, setActiveMenu] = useState(false)
+  const activeMenuSwitch = (event, value) => setActiveMenu(value)
 
-  // const handleClick = (event) => {
-  //   setAnchorEl(event.currentTarget)
-  //   setOpen(true)
-  // }
-
-  // const handleClose = () => {
-  //   setAnchorEl(null)
-  //   setOpen(false)
-  // }
-
+  // effect to re-set the active menu in Header, if needed.
   useEffect(() => {
-    //
-    // find a way to show which page we are currently on
-    //
-    // the old way:
-    //
-    // const currLocation = window.location.pathname
-    // let currPosition = menuBar.findIndex((e) => e[1] === currLocation)
-    // if (currPosition !== value && currPosition !== -1) setValue(currPosition)
-  }, [value])
+    console.log("Location has changed. pathname:", pathname)
+    if (menuMap.has(pathname)) {
+      if (menuMap.get(pathname) !== activeMenu) {
+        setActiveMenu(menuMap.get(pathname))
+      }
+    } else {
+      // console.log("on a path without a menuItem: ", pathname)
+      setActiveMenu(false)
+    }
+  }, [pathname, activeMenu])
 
   return (
     <React.Fragment>
@@ -106,11 +105,11 @@ const Header = (props) => {
               className={classes.logoContainer}
               disableRipple
             >
-              <img src={logo} alt="Todo" className={classes.logo} />
+              <img src={logo} alt="Three Layer Todo" className={classes.logo} />
             </Button>
             <Tabs
-              value={value}
-              onChange={handleChange}
+              value={activeMenu}
+              onChange={activeMenuSwitch}
               className={classes.tabContainer}
               indicatorColor="primary" // hiding the underline
             >
@@ -126,6 +125,21 @@ const Header = (props) => {
                 component={Link}
                 to="/todos"
               />
+              {authToken ? (
+                <Tab
+                  className={classes.tab}
+                  label="About"
+                  component={Link}
+                  to="/about"
+                />
+              ) : (
+                <Tab
+                  className={classes.tab}
+                  label="Health"
+                  component={Link}
+                  to="/healthcheck"
+                />
+              )}
               {!authToken && (
                 <Tab
                   className={classes.tab}
@@ -134,18 +148,6 @@ const Header = (props) => {
                   to="/login"
                 />
               )}
-              <Tab
-                className={classes.tab}
-                label="About"
-                component={Link}
-                to="/about"
-              />
-              <Tab
-                className={classes.tab}
-                label="Health"
-                component={Link}
-                to="/healthcheck"
-              />
             </Tabs>
             {authToken && (
               <Button
