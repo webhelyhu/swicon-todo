@@ -9,15 +9,15 @@ export const AuthProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState(existingTokens)
 
   const setToken = (data) => {
-    console.log("setToken called. current token is", authToken)
+    // console.log("setToken called. current token is", authToken)
     if (!data || typeof data !== 'string' || data.length < 10) {
       // possible not valid token.
       // assume we want to remove token (to log out)
-      console.log("Removing token")
+      // console.log("Removing token")
       setAuthToken("")
       localStorage.removeItem(TOKENNAME)
     } else {
-      console.log("Set new token", data)
+      // console.log("Set new token", data)
       localStorage.setItem(TOKENNAME, JSON.stringify(data))
       setAuthToken(data)
     }

@@ -33,7 +33,7 @@ const TodoTable = ({ todosOfUser, setModalKey }) => {
       },
       authToken
     ).then((response) => {
-      console.log("received todos for TodoTable", response)
+      // console.log("received todos for TodoTable", response)
       setTodos(response?.todos || [])
     })
   }, [setTodos, todosOfUser, authToken])

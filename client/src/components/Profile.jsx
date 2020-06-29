@@ -10,7 +10,6 @@ import {
   Grid,
   Typography,
   makeStyles,
-  Box,
   Avatar,
 } from "@material-ui/core"
 
@@ -35,13 +34,14 @@ const useStyles = makeStyles((theme) => ({
 const Profile = ({ history }) => {
   const authToken = useAuthToken()
   const [data, setData] = useState({})
+  const [reload, setReload] = useState(Math.random())
   const classes = useStyles()
 
   useEffect(() => {
     API({ endpoint: "/api/test/user" }, authToken)
       .then((response) => setData(response))
       .catch((error) => console.log("test user error", error))
-  }, [setData, authToken])
+  }, [setData, authToken, reload])
 
   return (
     <React.Fragment>
@@ -58,34 +58,33 @@ const Profile = ({ history }) => {
             </IconButton>
           </Grid>
         </Grid>
-        <Typography variant="p">
-          <Box className={classes.paragraph}>
-            On this page you can find information about the logged in user.
-          </Box>
-          <Box className={classes.paragraph}>
-            You are logged in with the username {data?.user?.username}.
-          </Box>
-          <Box className={classes.paragraph}>
-            Your avatar link is {data?.user?.avatar}.
-          </Box>
-          <Box className={classes.paragraph}>
-            <Avatar
-              src={data?.user?.avatar}
-              className={classes.large}
-              variant="square"
-            />
-          </Box>
-          {data?.user?.id && (
-            <React.Fragment>
-              <Typography variant="h6" color="inherit">
-                You can upload new avatar here:
-              </Typography>
-              <Box className={classes.paragraph}>
-                <ImageUpload userId={data.user.id} />
-              </Box>
-            </React.Fragment>
-          )}
+
+        <Typography variant="body1" className={classes.paragraph}>
+          On this page you can find information about the logged in user.
         </Typography>
+        <Typography variant="body1" className={classes.paragraph}>
+          You are logged in with the username {data?.user?.username}.
+        </Typography>
+        <Typography variant="body1" className={classes.paragraph}>
+          Your avatar link is {data?.user?.avatar}.
+        </Typography>
+        <Avatar
+          src={data?.user?.avatar}
+          className={classes.large}
+          variant="square"
+        />
+        {data?.user?.id && (
+          <React.Fragment>
+            <Typography variant="h6" color="inherit">
+              You can upload new avatar here:
+            </Typography>
+            <ImageUpload
+              key={reload}
+              avatarId={data.user.id}
+              setParentKey={setReload}
+            />
+          </React.Fragment>
+        )}
       </Paper>
     </React.Fragment>
   )

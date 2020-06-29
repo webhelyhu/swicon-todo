@@ -44,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "25px",
     marginRight: "28px",
   },
+  hidden: {
+    display: "none",
+  },
   button: {
     ...theme.typography.estimate,
     borderRadius: "1.4em",
@@ -146,12 +149,19 @@ const Header = (props) => {
                   to="/healthcheck"
                 />
               )}
-              {!authToken && (
+              {!authToken ? (
                 <Tab
                   className={classes.loginTab}
                   label="Login"
                   component={Link}
                   to="/login"
+                />
+              ) : (
+                <Tab
+                  className={classes.hidden}
+                  label=""
+                  component={Link}
+                  to="/"
                 />
               )}
             </Tabs>

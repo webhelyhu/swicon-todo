@@ -1,9 +1,17 @@
 import React from "react"
-import { makeStyles } from "@material-ui/core/styles"
 import Modal from "@material-ui/core/Modal"
 import Backdrop from "@material-ui/core/Backdrop"
 import Fade from "@material-ui/core/Fade"
 import ImageUpload from "./ImageUpload"
+import {
+  Box,
+  IconButton,
+  Paper,
+  Grid,
+  Typography,
+  makeStyles,
+} from "@material-ui/core"
+import Close from "@material-ui/icons/Close"
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -17,13 +25,13 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
+  centerContent: {
+    maxWidth: "300px",
+    margin: "auto",
+  },
 }))
 
-export default function ImageUploadModal({
-  avatarId,
-  setAvatarId,
-  setUsersTableKey,
-}) {
+const ImageUploadModal = ({ avatarId, setAvatarId, setParentKey, history }) => {
   const classes = useStyles()
   // const [modalKey, setModalKey] = useState(Math.random())
 
@@ -46,24 +54,32 @@ export default function ImageUploadModal({
         }}
       >
         <Fade in={!!avatarId}>
-          <div className={classes.paper}>
-            <h2 id="transition-modal-title">
-              Uploading image to user id {avatarId}
-            </h2>
-            <p id="transition-modal-description">
-              To close, click:
-              <button onClick={handleClose}>Close</button>
-            </p>
-
-            <ImageUpload
-              // key={modalKey}
-              avatarId={avatarId}
-              setAvatarId={setAvatarId}
-              setUsersTableKey={setUsersTableKey}
-            />
-          </div>
+          <Paper className={classes.paper}>
+            <Grid container justify="space-between" alignItems="center">
+              <Grid item>
+                <Typography variant="h6" color="inherit">
+                  Upload User Image
+                </Typography>
+              </Grid>
+              <Grid item>
+                <IconButton onClick={handleClose}>
+                  <Close />
+                </IconButton>
+              </Grid>
+            </Grid>
+            <Box>
+              <ImageUpload
+                // key={modalKey}
+                avatarId={avatarId}
+                setAvatarId={setAvatarId}
+                setParentKey={setParentKey}
+              />
+            </Box>
+          </Paper>
         </Fade>
       </Modal>
     </React.Fragment>
   )
 }
+
+export default ImageUploadModal

@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     todobody: DataTypes.STRING,
     owner: DataTypes.INTEGER
   }, {});
-  Todo.associate = function(models) {
+  Todo.associate = function (models) {
     // associations can be defined here
   };
   return Todo;

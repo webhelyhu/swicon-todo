@@ -22,7 +22,7 @@ export default function Home() {
       <ImageUploadModal
         avatarId={avatarId}
         setAvatarId={setAvatarId}
-        setUsersTableKey={setUsersTableKey}
+        setParentKey={setUsersTableKey}
       />
     </React.Fragment>
   )

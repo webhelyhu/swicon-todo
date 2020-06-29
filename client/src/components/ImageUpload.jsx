@@ -2,12 +2,13 @@ import React, { useRef, useState } from "react"
 import { useEffect } from "react"
 import { uploadImage } from "../helpers/api"
 import { useAuthToken } from "../context/auth"
+import { Button } from "@material-ui/core"
 
 const ImageUpload = ({
   errorText,
   avatarId: userId,
   setAvatarId,
-  setUsersTableKey,
+  setParentKey,
 }) => {
   const [file, setFile] = useState()
   const [preview, setPreview] = useState()
@@ -49,8 +50,8 @@ const ImageUpload = ({
       uploadImage(userId, formData, authToken)
         .then((response) => {
           console.log("Image uploaded:", response)
-          setAvatarId(false)
-          setUsersTableKey(Math.random())
+          if (setAvatarId) setAvatarId(false)
+          setParentKey(Math.random())
         })
         .catch((error) => console.log("test user error", error))
     } catch (error) {
@@ -69,26 +70,38 @@ const ImageUpload = ({
         onChange={pickedHandler}
       />
       <div>
-        <div>
-          Preview
+        <div style={{ border: "1px solid black", height: 270, width: 270 }}>
           {preview && (
             <img
               src={preview}
               alt="Preview"
-              style={{ maxWidth: 200, maxHeight: 300 }}
+              style={{ maxWidth: 250, maxHeight: 250 }}
             />
           )}
         </div>
-        <button type="button" onClick={pickImageHandler}>
-          PICK IMAGE
-        </button>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{
+            minWidth: 120,
+            marginTop: "2em",
+            marginBottom: "1em",
+            marginRight: "1em",
+          }}
+          onClick={pickImageHandler}
+        >
+          Pick Image
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ minWidth: 120, marginTop: "2em", marginBottom: "1em" }}
+          onClick={sendImageToServer}
+        >
+          SAVE
+        </Button>
       </div>
       {!isValid && <p>{errorText}</p>}
-      <div>
-        <button type="button" onClick={sendImageToServer}>
-          Send Image
-        </button>
-      </div>
     </div>
   )
 }
