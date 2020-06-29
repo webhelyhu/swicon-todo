@@ -16,6 +16,8 @@ import SaveAlt from "@material-ui/icons/SaveAlt"
 import Search from "@material-ui/icons/Search"
 import ViewColumn from "@material-ui/icons/ViewColumn"
 import ListAlt from "@material-ui/icons/ListAlt"
+import Person from "@material-ui/icons/Person"
+import Face from "@material-ui/icons/Face"
 
 export const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -40,4 +42,6 @@ export const tableIcons = {
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
   ListAlt: forwardRef((props, ref) => <ListAlt {...props} ref={ref} />),
+  Person: forwardRef((props, ref) => <Person {...props} ref={ref} />),
+  Face: forwardRef((props, ref) => <Face {...props} ref={ref} />),
 }

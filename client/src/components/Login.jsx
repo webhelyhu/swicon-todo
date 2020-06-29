@@ -42,7 +42,6 @@ export default function Login(props) {
     <Card>
       <CardContent className={classes.centerContent}>
         <Typography variant="h4">Login</Typography>
-
         <UserPassForm submitAction={postLogin} submitText="Sign In" />
         <Link to="/adduser">Don't have a user yet? Go to Add User page!</Link>
       </CardContent>

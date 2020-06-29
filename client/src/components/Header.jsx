@@ -38,6 +38,12 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 10,
     marginLeft: "25px",
   },
+  loginTab: {
+    ...theme.typography.tab,
+    minWidth: 10,
+    marginLeft: "25px",
+    marginRight: "28px",
+  },
   button: {
     ...theme.typography.estimate,
     borderRadius: "1.4em",
@@ -135,14 +141,14 @@ const Header = (props) => {
               ) : (
                 <Tab
                   className={classes.tab}
-                  label="Health"
+                  label="Healthcheck"
                   component={Link}
                   to="/healthcheck"
                 />
               )}
               {!authToken && (
                 <Tab
-                  className={classes.tab}
+                  className={classes.loginTab}
                   label="Login"
                   component={Link}
                   to="/login"

@@ -2,7 +2,7 @@ require("dotenv").config();
 const db = require("../../models/index");
 const User = db.User;
 const Todo = db.Todo;
-
+const fs = require('fs')
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
@@ -75,7 +75,7 @@ exports.signin = (req, res) => {
 exports.userContent = (req, res) => {
   User.findOne({
     where: { id: req.userId },
-    attributes: ["username"],
+    attributes: ["username", "avatar"],
   })
     .then((user) => {
       res.status(200).json({
@@ -86,6 +86,36 @@ exports.userContent = (req, res) => {
     .catch((err) => {
       res.status(500).json({
         description: "Can not access User Page",
+        error: err,
+      });
+    });
+};
+
+exports.saveUserImage = (req, res) => {
+
+  // if there is a current avatar --> remove file
+  User.findOne({ where: { id: req.body.userId }, })
+    .then((user) => {
+      console.log("Trying to remove previous avatar of user: ", user.avatar)
+      fs.unlink(user.avatar, err => console.log(err))
+    })
+    .catch((err) => {
+      // console.log("Previous avatar removal not succeed", err)
+    });
+
+  User.update(
+    { avatar: req.file.path, },
+    { where: { id: req.body.userId } },
+  )
+    .then((user) => {
+      res.status(200).json({
+        description: "Avatar saved",
+        user: user,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        description: "Error with saving avatar",
         error: err,
       });
     });

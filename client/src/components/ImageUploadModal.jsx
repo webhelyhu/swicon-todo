@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import Modal from "@material-ui/core/Modal"
 import Backdrop from "@material-ui/core/Backdrop"
 import Fade from "@material-ui/core/Fade"
-import TodoTable from "./TodoTable"
+import ImageUpload from "./ImageUpload"
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -19,12 +19,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function TodoModal({ todosOfUser, setTodosOfUser }) {
+export default function ImageUploadModal({ avatarId, setAvatarId }) {
   const classes = useStyles()
   const [modalKey, setModalKey] = useState(Math.random())
 
   const handleClose = () => {
-    setTodosOfUser(false)
+    setAvatarId(false)
   }
 
   return (
@@ -33,7 +33,7 @@ export default function TodoModal({ todosOfUser, setTodosOfUser }) {
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         className={classes.modal}
-        open={!!todosOfUser}
+        open={!!avatarId}
         onClose={handleClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
@@ -41,17 +41,20 @@ export default function TodoModal({ todosOfUser, setTodosOfUser }) {
           timeout: 500,
         }}
       >
-        <Fade in={!!todosOfUser}>
+        <Fade in={!!avatarId}>
           <div className={classes.paper}>
-            <h2 id="transition-modal-title">Todos of User id {todosOfUser}</h2>
+            <h2 id="transition-modal-title">
+              Uploading image to user id {avatarId}
+            </h2>
             <p id="transition-modal-description">
               To close, click:
               <button onClick={handleClose}>Close</button>
             </p>
 
-            <TodoTable
+            <ImageUpload
               key={modalKey}
-              todosOfUser={todosOfUser}
+              avatarId={avatarId}
+              setAvatarId={setAvatarId}
               setModalKey={setModalKey}
             />
           </div>

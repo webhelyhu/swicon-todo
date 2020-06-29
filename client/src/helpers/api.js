@@ -54,3 +54,22 @@ export function register({ username = "", password = "" }) {
       console.error(error);
     });
 }
+
+
+export function uploadImage(userId, formData, authTokens) {
+  const config = {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${authTokens}`,
+    },
+    body: formData,
+  };
+  return fetch(`/api/userimage/${userId}`, config)
+    .then((response) => {
+      return response.json();
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
