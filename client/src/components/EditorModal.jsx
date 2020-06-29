@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const EditorModal = ({ edited, setEdited }) => {
+const EditorModal = ({ edited, setEdited, newTodoForUserId, setModalKey }) => {
   const classes = useStyles()
 
   const handleClose = () => {
@@ -48,7 +48,12 @@ const EditorModal = ({ edited, setEdited }) => {
               <button onClick={handleClose}>Close</button>
             </p>
 
-            <EditorForm edited={edited} setEdited={setEdited} />
+            <EditorForm
+              edited={edited}
+              setEdited={setEdited}
+              newTodoForUserId={newTodoForUserId}
+              setModalKey={setModalKey}
+            />
           </div>
         </Fade>
       </Modal>

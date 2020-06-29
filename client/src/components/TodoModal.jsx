@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import Modal from "@material-ui/core/Modal"
 import Backdrop from "@material-ui/core/Backdrop"
@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TodoModal({ todosOfUser, setTodosOfUser }) {
   const classes = useStyles()
+  const [modalKey, setModalKey] = useState(Math.random())
 
   const handleClose = () => {
     setTodosOfUser(false)
@@ -48,7 +49,12 @@ export default function TodoModal({ todosOfUser, setTodosOfUser }) {
               <button onClick={handleClose}>Close</button>
             </p>
 
-            <TodoTable todosOfUser={todosOfUser} />
+            <TodoTable
+              key={modalKey}
+              todosOfUser={todosOfUser}
+              setTodosOfUser={setTodosOfUser}
+              setModalKey={setModalKey}
+            />
           </div>
         </Fade>
       </Modal>

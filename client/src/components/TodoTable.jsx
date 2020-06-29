@@ -6,7 +6,7 @@ import { tableIcons } from "./TableIcons"
 import { useAuthToken } from "../context/auth"
 import EditorModal from "./EditorModal"
 
-const TodoTable = ({ todosOfUser, setTodosOfUser }) => {
+const TodoTable = ({ todosOfUser, setModalKey }) => {
   const authToken = useAuthToken()
   const [todos, setTodos] = useState([])
   const [edited, setEdited] = useState()
@@ -29,11 +29,30 @@ const TodoTable = ({ todosOfUser, setTodosOfUser }) => {
     console.log("Edit todo", todoId)
     setEdited(todoId)
   }
+
   const removeTodo = (todoId) => {
     console.log("REMOVE todo", todoId)
+
+    API(
+      {
+        endpoint: `/api/todo/${todoId}`,
+        method: "DELETE",
+      },
+      authToken
+    ).then((response) => {
+      console.log("DELETE todo response", response)
+      // reload ourselves!
+      setModalKey(Math.random())
+    })
   }
+
   const addNewTodo = () => {
-    console.log("Add new todo for user", todosOfUser)
+    if (!todosOfUser) {
+      console.log("AddNewTodo called, but no user ID present!")
+    } else {
+      console.log("Add new todo for user", todosOfUser)
+      setEdited(true)
+    }
   }
 
   if (!Array.isArray(todos)) return <p>Waiting for todos...</p>
@@ -72,7 +91,7 @@ const TodoTable = ({ todosOfUser, setTodosOfUser }) => {
             tooltip: "Add New Todo",
             isFreeAction: true,
             onClick: (event, rowData) => {
-              addNewTodo(rowData.id)
+              addNewTodo()
             },
           },
         ]}
@@ -80,7 +99,12 @@ const TodoTable = ({ todosOfUser, setTodosOfUser }) => {
           actionsColumnIndex: -1,
         }}
       />
-      <EditorModal edited={edited} setEdited={setEdited} />
+      <EditorModal
+        edited={edited}
+        setEdited={setEdited}
+        newTodoForUserId={todosOfUser}
+        setModalKey={setModalKey}
+      />
     </React.Fragment>
   )
 }

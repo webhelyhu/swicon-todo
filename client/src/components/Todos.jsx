@@ -7,6 +7,8 @@ export default function Todos() {
   const authToken = useAuthToken()
   const [todotitle, setTodotitle] = useState("")
   const [todobody, setTodobody] = useState("")
+  const [todosOfUser, setTodosOfUser] = useState()
+  const [modalKey, setModalKey] = useState(Math.random())
 
   const submitAddTodo = (e) => {
     e.preventDefault()
@@ -32,7 +34,12 @@ export default function Todos() {
   return (
     <React.Fragment>
       <h1>Todos</h1>
-      <TodoTable />
+      <TodoTable
+        key={modalKey}
+        todosOfUser={todosOfUser}
+        setTodosOfUser={setTodosOfUser}
+        setModalKey={setModalKey}
+      />
       <form className="addtodo" onSubmit={submitAddTodo}>
         <div>New Todo</div>
         <div>

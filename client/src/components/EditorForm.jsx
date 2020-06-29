@@ -6,7 +6,6 @@ import {
   CardContent,
   FormGroup,
   TextField,
-  Typography,
 } from "@material-ui/core"
 import { ErrorMessage, Field, Form, Formik } from "formik"
 
@@ -27,12 +26,13 @@ const ErrMessage = (props) => {
   )
 }
 
-const EditorForm = ({ edited, setEdited }) => {
+const EditorForm = ({ edited, setEdited, newTodoForUserId, setModalKey }) => {
   const authToken = useAuthToken()
   const [todoValues, setTodoValues] = useState(initialValues)
 
   const getInitialValues = useCallback(async () => {
-    if (edited) {
+    if (edited && typeof edited === "number") {
+      console.log("Loading default values of todo ", edited)
       const gotResponse = await API(
         { endpoint: `/api/todo/${edited}` },
         authToken
@@ -40,7 +40,6 @@ const EditorForm = ({ edited, setEdited }) => {
       console.log("Initializing with", gotResponse?.todo || initialValues)
       setTodoValues(gotResponse?.todo || initialValues)
     } else {
-      // adding new todo. Where is UserId??
       console.log("Initializing with defaults.")
       setTodoValues(initialValues)
     }
@@ -50,18 +49,48 @@ const EditorForm = ({ edited, setEdited }) => {
     getInitialValues()
   }, [getInitialValues])
 
+  const saveTodo = (values) => {
+    const data = {
+      owner: newTodoForUserId,
+      todotitle: values.todotitle,
+      todobody: values.todobody,
+    }
+
+    if (values.owner) {
+      // update existing todo
+      API(
+        { endpoint: `/api/todo/${values.id}`, method: "PUT", data },
+        authToken
+      ).then((response) => {
+        console.log("Save response: ", response)
+        setEdited(false) // close self
+        setModalKey(Math.random()) // reload todo list
+      })
+    } else {
+      // create new todo for user
+      API({ endpoint: `/api/todo`, method: "POST", data }, authToken).then(
+        (response) => {
+          console.log("Create todo response: ", response)
+          // setEdited(response?.todo?.id || edited) // reload self
+          setEdited(false) // close self
+          setModalKey(Math.random()) // reload todo list
+        }
+      )
+    }
+  }
+
   console.log("Editor renders:", edited, todoValues)
 
   return (
     <Card>
       <CardContent>
-        <Typography variant="h4">New Account</Typography>
+        {/* <Typography variant="h4">Todo</Typography> */}
 
         <Formik
           initialValues={todoValues}
           enableReinitialize={true}
           onSubmit={(values, formikHelpers) => {
-            console.log("Will save todo here")
+            saveTodo(values)
           }}
         >
           {({ values, errors, isSubmitting, isValidating }) => (
