@@ -12,7 +12,7 @@ cp -r ../app node/
 cp -r ../config node/
 cp -r ../migrations node/
 cp -r ../models node/
-cp ../production.env node/.env
+cp ../.env node/.env
 cp ../.sequelizerc node/
 cp ../package*.json node/
 cp ../server.js node/
