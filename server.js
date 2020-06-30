@@ -1,5 +1,6 @@
-const express = require("express");
+const environment = require("dotenv").config();
 const path = require("path");
+const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
@@ -9,6 +10,7 @@ app.use(express.static(path.join(__dirname, "client/build")));
 
 require("./app/router/router.js")(app);
 
+console.log("##################Creating express server. Environment is", process.env.NODE_ENV)
 // Create a Server
 const port = process.env.PORT || 8080;
 const server = app.listen(port, function () {

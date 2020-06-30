@@ -1,4 +1,3 @@
-require("dotenv").config();
 const db = require("../../models/index");
 const User = db.User;
 const Todo = db.Todo;
