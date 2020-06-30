@@ -1,0 +1,34 @@
+version: "3"
+services:
+  todo-database:
+    image: "postgres"
+    env_file:
+      - postgres/database.env
+    volumes:
+      - ./postgres/database-data:/var/lib/postgresql/data/
+    # ports:
+    # - "5432:5432"
+    restart: unless-stopped
+
+  pgAdmin:
+    restart: always
+    image: dpage/pgadmin4
+    ports:
+      - "5430:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: szygyuri@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: 12345
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+
+  node-todo:
+    restart: always
+    image: nodeserver
+    build: ./node
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./images:/app/uploads/images
+
+volumes:
+  pgadmin:
